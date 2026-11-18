@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" role="img" aria-labelledby="title desc">
+  <title id="title">TicketideAI</title>
+  <desc id="desc">A customer request becomes a sandboxed plan, recorded effects are checked against policy, and the result is committed, sent to human review, or refused.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#94a3b8"/>
+    </marker>
+    <style>
+      .title { font: 700 46px system-ui, -apple-system, "Segoe UI", sans-serif; fill: #f8fafc; }
+      .tagline { font: 400 21px system-ui, -apple-system, "Segoe UI", sans-serif; fill: #cbd5e1; }
+      .box { fill: #1e293b; stroke: #475569; stroke-width: 1.5; }
+      .safe { fill: #123c33; stroke: #34d399; stroke-width: 1.5; }
+      .wait { fill: #41300f; stroke: #fbbf24; stroke-width: 1.5; }
+      .stop { fill: #451c24; stroke: #fb7185; stroke-width: 1.5; }
+      .label { font: 600 18px system-ui, -apple-system, "Segoe UI", sans-serif; fill: #f8fafc; text-anchor: middle; }
+      .note { font: 400 14px system-ui, -apple-system, "Segoe UI", sans-serif; fill: #cbd5e1; text-anchor: middle; }
+      .line { stroke: #94a3b8; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect width="1200" height="420" fill="#0f172a"/>
+  <text x="60" y="84" class="title">TicketideAI</text>
+  <text x="60" y="122" class="tagline">A support agent that plans in code and commits only policy-checked effects.</text>
+  <rect x="60" y="205" width="170" height="104" rx="10" class="box"/>
+  <text x="145" y="250" class="label">Planner</text>
+  <text x="145" y="276" class="note">writes plan(api)</text>
+  <rect x="285" y="205" width="170" height="104" rx="10" class="box"/>
+  <text x="370" y="250" class="label">Sandbox</text>
+  <text x="370" y="276" class="note">records effects</text>
+  <rect x="510" y="205" width="170" height="104" rx="10" class="box"/>
+  <text x="595" y="250" class="label">Policy</text>
+  <text x="595" y="276" class="note">checks the change set</text>
+  <rect x="800" y="158" width="340" height="56" rx="10" class="safe"/>
+  <text x="970" y="193" class="label">Commit, after re-checking state</text>
+  <rect x="800" y="229" width="340" height="56" rx="10" class="wait"/>
+  <text x="970" y="264" class="label">Escalate to a human reviewer</text>
+  <rect x="800" y="300" width="340" height="56" rx="10" class="stop"/>
+  <text x="970" y="335" class="label">Refuse, with nothing written</text>
+  <path d="M230 257 H279" class="line"/>
+  <path d="M455 257 H504" class="line"/>
+  <path d="M680 257 C735 257 735 186 794 186" class="line"/>
+  <path d="M680 257 H794" class="line"/>
+  <path d="M680 257 C735 257 735 328 794 328" class="line"/>
+</svg>

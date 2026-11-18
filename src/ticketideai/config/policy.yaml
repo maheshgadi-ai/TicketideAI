@@ -1,0 +1,26 @@
+# Ridgeline Outfitters store policy, enforced in code by tools/policy.py.
+
+return_window_days: 30
+non_returnable_categories:
+  - clearance
+returnable_statuses:
+  - delivered
+
+# Refund totals above this amount need a human reviewer.
+refund_approval_threshold: 200.00
+
+# A plan proposing more operations than this is blocked.
+max_operations_per_plan: 10
+
+# Fulfilment statuses belong to the warehouse; support plans may only set these.
+agent_settable_statuses:
+  - cancelled
+  - returned
+
+status_transitions:
+  placed: [processing, cancelled]
+  processing: [shipped, cancelled]
+  shipped: [delivered]
+  delivered: [returned]
+  cancelled: []
+  returned: []

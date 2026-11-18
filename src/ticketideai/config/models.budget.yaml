@@ -1,0 +1,37 @@
+# Low-cost routing profile. Select it with:
+#   MODELS_CONFIG_PATH=src/ticketideai/config/models.budget.yaml
+#
+# Selection rules (enforced by tests/config/test_profiles.py):
+# - responder: the cheapest catalog model;
+# - planner: the cheapest model at tier >= 2 (plan code needs real reasoning);
+# - judge: the cheapest model no other role uses;
+# - never a model that another catalog model beats on both tier and price.
+#
+# Prices per 1M tokens (input / output), from model_catalog.yaml:
+#   gpt-6-sol          $2.00 / $10.00
+#   gpt-6-luna         $0.10 / $0.50
+#   claude-sonnet-5-5  $2.00 / $10.00
+
+default:
+  provider: openai
+  model: gpt-6-sol
+  max_tokens: 16000
+
+roles:
+  # gpt-6-sol and claude-sonnet-5-5 tie on price; Sonnet keeps the planner on the
+  # same provider as the default profile, so the prompt behaves alike.
+  planner:
+    provider: anthropic
+    model: claude-sonnet-5-5
+    reasoning_effort: medium
+
+  responder:
+    provider: openai
+    model: gpt-6-luna
+    reasoning_effort: low
+
+  # Cheapest model that neither the planner (Sonnet) nor the responder (Luna) uses.
+  judge:
+    provider: openai
+    model: gpt-6-sol
+    reasoning_effort: medium

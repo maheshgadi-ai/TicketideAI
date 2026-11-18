@@ -1,0 +1,76 @@
+# Facts about models, shared by every routing profile (models*.yaml).
+# Profiles pick models for roles; this file records what each model accepts
+# and costs. A profile may override an entry by defining the same key itself.
+#
+# capabilities:
+#   efforts             accepted reasoning_effort values (null = not checked)
+#   default_effort      what the API uses when effort is omitted
+#   temperature_efforts effort levels at which `temperature` is accepted;
+#                       [] means never
+#   tier                capability rank within one provider (higher = stronger);
+#                       not comparable across providers. Used to reject routing
+#                       to a model that another model beats on tier and price.
+# Models not listed here are not validated.
+
+capabilities:
+  # --- OpenAI (checked 2026-11-15) ------------------------------------------
+  # https://developers.openai.com/api/docs/models/<model-id>
+  # https://developers.openai.com/api/docs/guides/latest-model
+  # GPT-6 rejects temperature/top_p unless effort is `none`.
+  # Tiers follow OpenAI's own lineup and replacement mapping on the deprecations
+  # page: gpt-5 -> Sol line, gpt-5-mini -> Terra line, gpt-5-nano -> Luna.
+  gpt-6-astra:
+    provider: openai
+    tier: 4
+    efforts: [low, medium, high, xhigh, max]  # no `none`
+    temperature_efforts: []
+  gpt-6-sol:
+    provider: openai
+    tier: 3
+    efforts: [none, low, medium, high, xhigh, max]
+    default_effort: medium
+    temperature_efforts: [none]
+  gpt-6-luna:
+    provider: openai
+    tier: 1
+    efforts: [none, low, medium, high, xhigh, max]
+    default_effort: medium
+    temperature_efforts: [none]
+  gpt-5.6-terra:
+    provider: openai
+    tier: 2
+    efforts: [none, low, medium, high, xhigh, max]
+    default_effort: medium
+    # The model page doesn't state the temperature rule; this applies the
+    # documented GPT-6 rule (effort `none` only) as a conservative default.
+    temperature_efforts: [none]
+
+  # --- Anthropic (checked 2026-11-15) ---------------------------------------
+  # https://platform.claude.com/docs/en/build-with-claude/effort
+  # https://platform.claude.com/docs/en/build-with-claude/thinking
+  # Tiers: Opus above Sonnet (Haiku, not listed, would be 1).
+  # Non-default temperature/top_p/top_k return 400 on these models.
+  # Forced tool use is also rejected, so the Anthropic provider uses
+  # structured outputs (output_config.format) for structured().
+  claude-opus-5-5:
+    provider: anthropic
+    tier: 3
+    efforts: [low, medium, high, xhigh, max]
+    default_effort: medium
+    temperature_efforts: []
+  claude-sonnet-5-5:
+    provider: anthropic
+    tier: 2
+    efforts: [low, medium, high, xhigh, max]
+    default_effort: high
+    temperature_efforts: []
+
+# USD per 1M tokens, standard tier, from the providers' model/pricing pages
+# (2026-11-15). Long-prompt surcharges (>272k input on OpenAI) aren't modeled.
+pricing:
+  gpt-6-astra: {input_per_mtok: 10.0, output_per_mtok: 50.0}
+  gpt-6-sol: {input_per_mtok: 2.0, output_per_mtok: 10.0}
+  gpt-6-luna: {input_per_mtok: 0.10, output_per_mtok: 0.50}
+  gpt-5.6-terra: {input_per_mtok: 2.0, output_per_mtok: 12.0}
+  claude-opus-5-5: {input_per_mtok: 4.0, output_per_mtok: 20.0}
+  claude-sonnet-5-5: {input_per_mtok: 2.0, output_per_mtok: 10.0}

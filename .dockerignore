@@ -1,0 +1,16 @@
+.env
+.env.*
+!.env.example
+.git
+.venv
+venv
+data
+outputs
+evals/results
+docs
+tests
+**/__pycache__
+**/*.pyc
+**/._*
+.pytest_cache
+.ruff_cache

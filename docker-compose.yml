@@ -1,0 +1,28 @@
+services:
+  app:
+    build: .
+    image: ticketideai:latest
+    ports:
+      - "127.0.0.1:8501:8501"
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      LANGFUSE_PUBLIC_KEY: ${LANGFUSE_PUBLIC_KEY:-}
+      LANGFUSE_SECRET_KEY: ${LANGFUSE_SECRET_KEY:-}
+      LANGFUSE_BASE_URL: ${LANGFUSE_BASE_URL:-https://cloud.langfuse.com}
+      DATABASE_URL: /app/data/ticketide.sqlite
+      STORE_AS_OF: ${STORE_AS_OF:-2026-11-17T00:00:00}
+    volumes:
+      - ticketide-data:/app/data
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /home/ticketide:uid=10001,gid=10001,mode=0700
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+volumes:
+  ticketide-data:
